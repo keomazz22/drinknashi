@@ -110,13 +110,13 @@
   }
 
   .preloader-sub {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 400;
-    letter-spacing: 0.5em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-top: 0.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.2em;
+    color: var(--gold-light);
+    margin-top: 0.6rem;
     opacity: 0;
     animation: fadeUp 0.8s ease 0.6s forwards;
   }
@@ -603,299 +603,134 @@
   }
 
   /* =============================================
-     SCROLL-DRIVEN 360° BOTTLE ROTATION
+     CSS 3D BOTTLE
   ============================================= */
-  #rotation-zone {
-    /* Tall section — scroll through it while bottle stays pinned */
-    height: 400vh;
+  .bottle-3d-scene {
     position: relative;
-  }
-
-  .rotation-sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    overflow: hidden;
-    background: radial-gradient(ellipse at center, #122018 0%, var(--deep-green) 70%);
+    align-items: flex-end;
   }
 
-  /* Background text that reveals on rotation progress */
-  .rotation-bg-text {
-    position: absolute;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(6rem, 18vw, 18rem);
-    font-weight: 300;
-    color: rgba(255,255,255,0.025);
-    user-select: none;
-    white-space: nowrap;
-    letter-spacing: 0.05em;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .bottle-3d-wrap {
+    position: relative;
+    animation: bottleFloat 7s ease-in-out infinite;
+    z-index: 2;
   }
 
-  .rotation-content {
-    display: flex;
-    align-items: center;
-    gap: 8rem;
-    max-width: 1400px;
-    width: 90%;
+  .bottle-3d-img {
+    height: clamp(400px, 58vh, 640px);
+    width: auto;
+    display: block;
     position: relative;
     z-index: 2;
   }
 
-  .rotation-info {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .rotation-facts {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-  }
-
-  .rotation-fact {
-    opacity: 0;
-    transform: translateX(-30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-    border-left: 2px solid rgba(201,145,61,0.3);
-    padding-left: 1.5rem;
-  }
-
-  .rotation-fact.active {
-    opacity: 1;
-    transform: translateX(0);
-    border-left-color: var(--gold);
-  }
-
-  .fact-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 300;
-    color: var(--gold);
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-
-  .fact-label {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.58rem;
-    font-weight: 500;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-  }
-
-  .fact-desc {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 300;
-    font-style: italic;
-    color: var(--cream);
-  }
-
-  /* 3D Bottle Scene */
-  .scene-3d {
-    flex: 0 0 auto;
-    perspective: 1200px;
-    perspective-origin: 50% 45%;
-    position: relative;
-  }
-
-  .bottle-3d-wrap {
-    transform-style: preserve-3d;
-    /* rotateY is driven by scroll JS */
-    transition: transform 0.05s linear;
-    position: relative;
-  }
-
-  .bottle-face {
+  /* Left bright highlight — cylindrical glass edge */
+  .bottle-glass-left {
     position: absolute;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    left: 4%; top: 3%;
+    width: 11%; height: 94%;
+    background: linear-gradient(to right,
+      rgba(255,255,255,0.16) 0%,
+      rgba(255,255,255,0.05) 55%,
+      transparent 100%
+    );
+    border-radius: 50% 0 0 50% / 4% 0 0 4%;
+    z-index: 3;
+    pointer-events: none;
+    mix-blend-mode: screen;
   }
 
-  .face-front {
-    transform: rotateY(0deg);
-  }
-
-  .face-back {
-    transform: rotateY(180deg);
-  }
-
-  .bottle-main-img {
-    height: clamp(420px, 60vh, 620px);
-    width: auto;
-    display: block;
-    filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8)) drop-shadow(0 0 30px rgba(201,145,61,0.15));
-  }
-
-  /* Back face: styled back label */
-  .bottle-back-face {
-    height: clamp(420px, 60vh, 620px);
-    width: clamp(170px, 22vw, 240px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(160deg, #e8efe0 0%, #daebd0 30%, #c8deba 100%);
-    border-radius: 12px 12px 20px 20px;
-    padding: 3rem 2rem;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.5);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .bottle-back-face::before {
-    content: '';
+  /* Thin specular shine streak */
+  .bottle-glass-shine {
     position: absolute;
-    inset: 6px;
-    border: 1px solid rgba(90,138,90,0.4);
-    border-radius: 8px 8px 16px 16px;
+    left: 8%; top: 2%;
+    width: 3.5%; height: 96%;
+    background: linear-gradient(to bottom,
+      transparent 0%,
+      rgba(255,255,255,0.28) 18%,
+      rgba(255,255,255,0.42) 38%,
+      rgba(255,255,255,0.28) 58%,
+      rgba(255,255,255,0.06) 80%,
+      transparent 100%
+    );
+    border-radius: 50%;
+    z-index: 4;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  /* Right dark wrap-around — cylindrical depth */
+  .bottle-glass-right {
+    position: absolute;
+    right: 3%; top: 3%;
+    width: 13%; height: 94%;
+    background: linear-gradient(to left,
+      rgba(0,0,0,0.42) 0%,
+      rgba(0,0,0,0.12) 55%,
+      transparent 100%
+    );
+    border-radius: 0 50% 50% 0 / 0 4% 4% 0;
+    z-index: 3;
     pointer-events: none;
   }
 
-  .back-brand {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.5rem;
-    font-weight: 600;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--sage);
-    margin-bottom: 1.2rem;
-  }
-
-  .back-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.2rem;
-    font-weight: 500;
-    color: #1a3a1a;
-    letter-spacing: 0.05em;
-    text-align: center;
-    margin-bottom: 0.5rem;
-  }
-
-  .back-subtitle {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.45rem;
-    font-weight: 400;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: #4a7a4a;
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  .back-nutrition {
-    width: 100%;
-    border-top: 1px solid rgba(90,138,90,0.4);
-    padding-top: 1rem;
-  }
-
-  .back-nutr-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.45rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #1a3a1a;
-    margin-bottom: 0.6rem;
-    text-align: center;
-    background: rgba(90,138,90,0.2);
-    padding: 0.3rem;
-    border-radius: 2px;
-  }
-
-  .back-nutr-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.25rem 0;
-    border-bottom: 1px solid rgba(90,138,90,0.15);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.42rem;
-    color: #2a5a2a;
-  }
-
-  .back-stamp {
-    margin-top: 1.5rem;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.4rem;
-    font-weight: 600;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--sage);
-    text-align: center;
-    border: 1px solid rgba(90,138,90,0.5);
-    padding: 0.4rem 0.8rem;
-    border-radius: 2px;
-  }
-
-  /* Right info panel */
-  .rotation-info-right {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .rotation-progress-label {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.58rem;
-    font-weight: 400;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-  }
-
-  .rotation-headline {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.8rem, 3vw, 3rem);
-    font-weight: 300;
-    color: var(--cream);
-    line-height: 1.3;
-    margin-bottom: 1.5rem;
-  }
-
-  .rotation-text {
-    font-size: 0.75rem;
-    font-weight: 300;
-    line-height: 2.1;
-    color: var(--text-muted);
-  }
-
-  .rotation-angle-display {
-    margin-top: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .angle-track {
-    flex: 1;
-    height: 1px;
-    background: rgba(201,145,61,0.2);
-    position: relative;
-  }
-
-  .angle-fill {
+  /* Amber liquid glow from inside */
+  .bottle-liquid-inner {
     position: absolute;
-    left: 0; top: 0;
-    height: 100%;
-    background: linear-gradient(90deg, var(--gold), var(--gold-light));
-    transition: width 0.1s linear;
+    left: 18%; top: 28%;
+    width: 64%; height: 45%;
+    background: radial-gradient(ellipse at 45% 50%,
+      rgba(201,145,61,0.22) 0%,
+      rgba(176,122,40,0.08) 55%,
+      transparent 80%
+    );
+    filter: blur(14px);
+    z-index: 1;
+    pointer-events: none;
+    mix-blend-mode: screen;
   }
 
-  .angle-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
-    font-weight: 300;
-    color: var(--gold);
-    min-width: 4rem;
-    text-align: right;
+  /* Caustic floor light */
+  .bottle-caustic {
+    position: absolute;
+    bottom: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px; height: 28px;
+    background: radial-gradient(ellipse,
+      rgba(201,145,61,0.45) 0%,
+      rgba(201,145,61,0.12) 50%,
+      transparent 70%
+    );
+    filter: blur(10px);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    animation: causticPulse 7s ease-in-out infinite;
+  }
+
+  @keyframes causticPulse {
+    0%,100% { opacity: 0.7; transform: translateX(-50%) scaleX(1); }
+    50%      { opacity: 0.4; transform: translateX(-50%) scaleX(0.75); }
+  }
+
+  /* Mirror / surface reflection */
+  .bottle-mirror {
+    position: absolute;
+    bottom: -70px;
+    left: 50%;
+    transform: translateX(-50%) scaleY(-1);
+    transform-origin: top center;
+    height: clamp(400px, 58vh, 640px);
+    width: auto;
+    opacity: 0.07;
+    filter: blur(4px) saturate(0.4);
+    pointer-events: none;
+    z-index: 1;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 50%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 50%);
   }
 
   /* =============================================
@@ -2317,7 +2152,6 @@
     .hero-desc { margin: 0 auto 2.5rem; }
     .hero-actions { justify-content: center; }
     .hero-bottle-wrap { height: 400px; }
-    .rotation-content { flex-direction: column; gap: 4rem; }
     .quality-grid { grid-template-columns: 1fr; gap: 4rem; }
     .quality-visual { height: 400px; }
     .nutrition-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2355,7 +2189,7 @@
   <!-- PRELOADER -->
   <div id="preloader">
     <div class="preloader-logo">NASHI</div>
-    <div class="preloader-sub">Succo di Pera Asiatica</div>
+    <div class="preloader-sub">Il Talismano della Frutta</div>
     <div class="preloader-bar"></div>
   </div>
 
@@ -2401,10 +2235,17 @@
 
       <div class="hero-bottle-wrap" id="heroBottle">
         <div class="bottle-glow"></div>
-        <div class="bottle-float-container">
-          <img src="https://raw.githubusercontent.com/keomazz22/COGLILATTIMO/main/nashi-bottle.jpeg" alt="Nashi Asian Pear Juice bottle" class="hero-bottle-img">
+        <div class="bottle-3d-scene">
+          <div class="bottle-3d-wrap">
+            <img src="https://raw.githubusercontent.com/keomazz22/COGLILATTIMO/main/nashi-bottle.jpeg" alt="Nashi Asian Pear Juice bottle" class="bottle-3d-img">
+            <div class="bottle-glass-left"></div>
+            <div class="bottle-glass-shine"></div>
+            <div class="bottle-glass-right"></div>
+            <div class="bottle-liquid-inner"></div>
+            <div class="bottle-caustic"></div>
+          </div>
+          <img src="https://raw.githubusercontent.com/keomazz22/COGLILATTIMO/main/nashi-bottle.jpeg" alt="" class="bottle-mirror" aria-hidden="true">
         </div>
-        <div class="bottle-reflection"></div>
       </div>
     </div>
 
@@ -2432,91 +2273,6 @@
       No shortcuts. No compromises. Only 100% pure fruit and a touch of lemon —
       because perfection needs nothing more.
     </p>
-  </section>
-
-  <!-- =============================================
-       360° BOTTLE ROTATION ZONE
-  ============================================= -->
-  <section id="rotation-zone">
-    <div class="rotation-sticky">
-      <div class="rotation-bg-text">NASHI</div>
-
-      <div class="rotation-content">
-        <!-- Left: Rotating facts -->
-        <div class="rotation-info">
-          <div class="rotation-facts" id="rotationFacts">
-            <div class="rotation-fact" id="fact-0">
-              <div class="fact-number">100%</div>
-              <div class="fact-label">Pure Fruit</div>
-              <div class="fact-desc">Nothing artificial. Nothing hidden. Every drop is pure Nashi pear and a touch of lemon.</div>
-            </div>
-            <div class="rotation-fact" id="fact-1">
-              <div class="fact-number">250ml</div>
-              <div class="fact-label">The Perfect Measure</div>
-              <div class="fact-desc">Precisely portioned for a single, exquisite moment of indulgence or daily ritual.</div>
-            </div>
-            <div class="rotation-fact" id="fact-2">
-              <div class="fact-number">61</div>
-              <div class="fact-label">Kcal / 100ml</div>
-              <div class="fact-desc">Guilt-free luxury. Natural energy from the finest Asian pear, nothing more.</div>
-            </div>
-            <div class="rotation-fact" id="fact-3">
-              <div class="fact-number">0g</div>
-              <div class="fact-label">Added Sugar</div>
-              <div class="fact-desc">The 12g of sugars per 100ml are entirely natural — the pear's own sweetness.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Center: 3D Bottle -->
-        <div class="scene-3d">
-          <div class="bottle-3d-wrap" id="bottle3D">
-            <!-- Front face -->
-            <div class="bottle-face face-front">
-              <img src="https://raw.githubusercontent.com/keomazz22/COGLILATTIMO/main/nashi-bottle.jpeg" alt="Nashi bottle front" class="bottle-main-img">
-            </div>
-            <!-- Back face: styled label -->
-            <div class="bottle-face face-back">
-              <div class="bottle-back-face">
-                <div class="back-brand">Trybeca · Rivoluzione Verde</div>
-                <div class="back-title">NASHI</div>
-                <div class="back-subtitle">Succo di Pera Asiatica</div>
-                <div class="back-nutrition">
-                  <div class="back-nutr-title">Valori Nutrizionali / 100ml</div>
-                  <div class="back-nutr-row"><span>Energia</span><span>258kJ / 61kcal</span></div>
-                  <div class="back-nutr-row"><span>Grassi</span><span>0g</span></div>
-                  <div class="back-nutr-row"><span>Carboidrati</span><span>14g</span></div>
-                  <div class="back-nutr-row"><span>di cui zuccheri</span><span>12g</span></div>
-                  <div class="back-nutr-row"><span>Fibre</span><span>1.2g</span></div>
-                  <div class="back-nutr-row"><span>Proteine</span><span>0g</span></div>
-                  <div class="back-nutr-row"><span>Sale</span><span>0g</span></div>
-                </div>
-                <div class="back-stamp">Made in Italy · 100% Fruit</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Context panel -->
-        <div class="rotation-info-right">
-          <div class="rotation-progress-label" id="rotProgressLabel">Exploring the bottle</div>
-          <h3 class="rotation-headline" id="rotHeadline">
-            Every angle reveals<br>a new story
-          </h3>
-          <p class="rotation-text" id="rotText">
-            The Nashi bottle is a statement of intent. Clean, minimal, honest —
-            designed to let the golden amber of the juice speak for itself.
-            Scroll to explore every facet of this extraordinary product.
-          </p>
-          <div class="rotation-angle-display">
-            <div class="angle-track">
-              <div class="angle-fill" id="angleFill" style="width: 0%"></div>
-            </div>
-            <div class="angle-number" id="angleNumber">0°</div>
-          </div>
-        </div>
-      </div>
-    </div>
   </section>
 
   <!-- =============================================
@@ -3285,7 +3041,7 @@
             if (el) el.classList.add('visible');
           });
         }, 200);
-      }, 2200);
+      }, 400);
     });
 
     /* ---- CUSTOM CURSOR ---- */
@@ -3359,8 +3115,7 @@
         ctx.globalAlpha = this.currentAlpha;
         const color = this.gold ? `rgba(201,145,61,1)` : `rgba(140,191,114,1)`;
         ctx.fillStyle = color;
-        ctx.shadowBlur = 6;
-        ctx.shadowColor = color;
+        ctx.shadowBlur = 0;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -3368,7 +3123,7 @@
       }
     }
 
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 25; i++) {
       const p = new Particle();
       p.life = Math.floor(Math.random() * p.maxLife);
       particles.push(p);
@@ -3393,84 +3148,6 @@
     document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
       revealObserver.observe(el);
     });
-
-    /* ---- 360° BOTTLE ROTATION (scroll-driven) ---- */
-    const rotationZone = document.getElementById('rotation-zone');
-    const bottle3D     = document.getElementById('bottle3D');
-    const angleFill    = document.getElementById('angleFill');
-    const angleNumber  = document.getElementById('angleNumber');
-    const facts        = document.querySelectorAll('.rotation-fact');
-    const rotHeadline  = document.getElementById('rotHeadline');
-    const rotText      = document.getElementById('rotText');
-    const rotLabel     = document.getElementById('rotProgressLabel');
-
-    const rightPanels = [
-      {
-        label: 'Front Label',
-        headline: 'The Nashi Identity',
-        text: 'Minimal, honest, distinguished. The front label speaks with quiet confidence — the name NASHI in bold contrast against a clean ivory field, accented by the sage green of the Trybeca brand.'
-      },
-      {
-        label: 'The Shoulder',
-        headline: 'Handcrafted in Glass',
-        text: 'The elegant long neck, sealed with a precision aluminium cap. Glass is the only vessel that respects the integrity of pure fruit juice — inert, timeless, premium.'
-      },
-      {
-        label: 'Back Label',
-        headline: 'Total Transparency',
-        text: 'Nothing is hidden. Every nutritional value, every origin detail, every contact is declared. The Trybeca philosophy: if you\'re proud of what\'s inside, you show everything.'
-      },
-      {
-        label: '360° Complete',
-        headline: 'Beauty in Every Angle',
-        text: 'From any perspective, the Nashi bottle is a statement piece. A product designed to be seen, admired, and — above all — savoured. The October drop awaits.'
-      }
-    ];
-
-    let lastAngle = -1;
-
-    function updateRotation() {
-      if (!rotationZone) return;
-      const rect     = rotationZone.getBoundingClientRect();
-      const total    = rotationZone.offsetHeight - window.innerHeight;
-      const scrolled = -rect.top;
-      const progress = Math.max(0, Math.min(1, scrolled / total));
-
-      const angle = progress * 360;
-
-      // Apply CSS 3D rotation
-      if (bottle3D) {
-        bottle3D.style.transform = `rotateY(${angle}deg)`;
-      }
-
-      // Update angle display
-      if (angleFill)   angleFill.style.width = (progress * 100) + '%';
-      if (angleNumber) angleNumber.textContent = Math.round(angle) + '°';
-
-      // Activate facts based on progress
-      const factIndex = Math.floor(progress * facts.length);
-      facts.forEach((f, i) => {
-        f.classList.toggle('active', i === Math.min(factIndex, facts.length - 1));
-      });
-
-      // Update right panel text
-      const panelIndex = Math.min(Math.floor(progress * rightPanels.length), rightPanels.length - 1);
-      if (panelIndex !== lastAngle) {
-        lastAngle = panelIndex;
-        const p = rightPanels[panelIndex];
-        if (rotLabel)    { rotLabel.style.opacity = 0; setTimeout(() => { rotLabel.textContent = p.label; rotLabel.style.opacity = 1; }, 200); }
-        if (rotHeadline) { rotHeadline.style.opacity = 0; setTimeout(() => { rotHeadline.textContent = p.headline; rotHeadline.style.opacity = 1; }, 300); }
-        if (rotText)     { rotText.style.opacity = 0; setTimeout(() => { rotText.textContent = p.text; rotText.style.opacity = 1; }, 400); }
-      }
-    }
-
-    // Smooth transitions for right panel
-    if (rotLabel)    rotLabel.style.transition    = 'opacity 0.4s ease';
-    if (rotHeadline) rotHeadline.style.transition = 'opacity 0.4s ease';
-    if (rotText)     rotText.style.transition     = 'opacity 0.4s ease';
-
-    window.addEventListener('scroll', updateRotation, { passive: true });
-    updateRotation();
 
     /* ---- WAITLIST FORM ---- */
     const form    = document.getElementById('waitlistForm');
