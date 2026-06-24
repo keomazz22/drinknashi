@@ -15,20 +15,21 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
 :root{
-  --black:     #020806;
-  --void:      #04080a;
-  --deep:      #071810;
-  --forest:    #0d2618;
-  --pine:      #0a1c12;
-  --sage:      #4a7a4a;
-  --sage-light:#7ab060;
-  --gold:      #c49a3c;
-  --gold-light:#e4b84a;
-  --gold-pale: #f0d88a;
-  --amber:     #a86e1c;
-  --cream:     #f4ead8;
-  --cream-dim: rgba(244,234,216,0.55);
-  --gold-dim:  rgba(196,154,60,0.18);
+  /* — palette extracted from the Nashi bottle label — */
+  --black:     #060e06;
+  --void:      #0b1a0d;   /* label dark green, lightened for bg */
+  --deep:      #122718;   /* main bg — rich hunter green, label character */
+  --forest:    #1a3822;   /* slightly lighter forest */
+  --pine:      #163020;   /* warm pine */
+  --sage:      #3d6b42;   /* label brand sage, more saturated */
+  --sage-light:#6ea858;   /* sage highlight */
+  --gold:      #c8920a;   /* juice amber-gold — warm, orange-leaning */
+  --gold-light:#ddb028;   /* bright gold highlight */
+  --gold-pale: #ecd07a;   /* pale gold for small accents */
+  --amber:     #a87010;   /* deep amber shadows */
+  --cream:     #f3eccc;   /* label ivory — warm, slightly yellow-cream */
+  --cream-dim: rgba(243,236,204,0.52);
+  --gold-dim:  rgba(200,146,10,0.16);
 }
 
 html{scroll-behavior:smooth;overflow-x:hidden;}
@@ -935,7 +936,7 @@ nav.on{
 ============================================================ */
 #waitlist{
   padding:18rem 5rem;
-  background:linear-gradient(160deg,#100800 0%,#0c0500 50%,#1a0a00 100%);
+  background:linear-gradient(160deg,#160e00 0%,#100a00 50%,#1e1200 100%);
   position:relative;overflow:hidden;
   border-top:1px solid rgba(196,154,60,.1);
 }
